@@ -55,6 +55,9 @@ func IsSame(m1, m2 *Matrix) bool {
 	}
 	return true
 }
+func (m *Matrix) Multiply(m1 *Matrix) *Matrix {
+	return Multiply(m, m1)
+}
 func Multiply(m1, m2 *Matrix) *Matrix {
 	m := ZeroMatrix(4)
 	dim := m1.Dim
