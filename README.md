@@ -70,3 +70,19 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 - intersections
 - objects
 - rays
+
+## 6. Light and Shading
+
+实现球的3d渲染，实现Phong光照模型
+
+该章大作业是实现球的3d渲染：
+
+![3d球](chapter06/chapter06.png)
+
+#### 对应的代码文件夹
+- chapter06
+- intersections
+- lights
+- objects/spheres
+- tuples
+

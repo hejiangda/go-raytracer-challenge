@@ -2,8 +2,10 @@ package intersections
 
 import (
 	"errors"
+	"lights"
 	"rays"
 	"sort"
+	"tuples"
 )
 
 type Intersection struct {
@@ -13,7 +15,8 @@ type Intersection struct {
 
 type PhysicalObject interface {
 	Intersect(r *rays.Ray) (ret []float64)
-	//SetTransform(t *matrices.Matrix)
+	NormalAt(p *tuples.Tuple) *tuples.Tuple
+	GetMaterial() *lights.Material
 }
 
 func Intersections(args ...Intersection) (ret []Intersection) {

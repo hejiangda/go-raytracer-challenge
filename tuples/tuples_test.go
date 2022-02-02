@@ -257,3 +257,21 @@ func TestMultiplyColors(t *testing.T) {
 	}
 
 }
+
+func TestReflectAVector45(t *testing.T) {
+	v := Vector(1, -1, 0)
+	n := Vector(0, 1, 0)
+	r := Reflect(v, n)
+	if !Vector(1, 1, 0).Equal(r) {
+		t.Fatal("r != vector(1, 1, 0)")
+	}
+}
+
+func TestReflectAVectorSlantedSurface(t *testing.T) {
+	v := Vector(0, -1, 0)
+	n := Vector(math.Sqrt2/2, math.Sqrt2/2, 0)
+	r := Reflect(v, n)
+	if !Vector(1, 0, 0).Equal(r) {
+		t.Fatal("r != vector(1, 0, 0)")
+	}
+}

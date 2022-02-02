@@ -50,6 +50,9 @@ func Vector(x, y, z float64) *Tuple {
 	t.W = 0.0
 	return t
 }
+func (a *Tuple) Add(b *Tuple) *Tuple {
+	return Add(a, b)
+}
 func Add(a1, a2 *Tuple) *Tuple {
 	t := new(Tuple)
 	t.X = a1.X + a2.X
@@ -58,7 +61,9 @@ func Add(a1, a2 *Tuple) *Tuple {
 	t.W = a1.W + a2.W
 	return t
 }
-
+func (a *Tuple) Subtract(b *Tuple) *Tuple {
+	return Subtract(a, b)
+}
 func Subtract(a1, a2 *Tuple) *Tuple {
 	t := new(Tuple)
 	t.X = a1.X - a2.X
@@ -67,7 +72,9 @@ func Subtract(a1, a2 *Tuple) *Tuple {
 	t.W = a1.W - a2.W
 	return t
 }
-
+func (a *Tuple) Negate() *Tuple {
+	return Negate(a)
+}
 func Negate(a *Tuple) *Tuple {
 	t := new(Tuple)
 	t.X = -a.X
@@ -127,4 +134,7 @@ func MultiplyColors(a, b *Tuple) *Tuple {
 	c.Z = a.Z * b.Z
 	c.W = a.W * b.W
 	return c
+}
+func Reflect(in, normal *Tuple) *Tuple {
+	return Subtract(in, normal.Multiply(2*Dot(in, normal)))
 }

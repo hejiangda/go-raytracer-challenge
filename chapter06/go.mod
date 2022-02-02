@@ -1,4 +1,4 @@
-module chapter05
+module chapter06
 
 go 1.17
 
@@ -21,7 +21,7 @@ require (
 
 require rays v0.0.0-00010101000000-000000000000
 
-require lights v0.0.0-00010101000000-000000000000 // indirect
+require lights v0.0.0-00010101000000-000000000000
 
 replace spheres => ../objects/spheres
 
