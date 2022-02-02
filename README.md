@@ -56,3 +56,16 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 #### 对应的代码文件夹
 - transformations
 - chapter04
+
+## 5. Ray-Sphere Intersections
+
+实现球、光线投射、球的相交检测等
+
+该章结束大作业是实现最基本的球的渲染：
+![红球](chapter05/chapter05.png)
+
+#### 对应的代码文件夹
+- chapter05
+- intersections
+- objects
+- rays
