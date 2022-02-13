@@ -22,8 +22,9 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 实现 Tuple 类型，Tuple 是 Point 和 Vector 的底层数据结构。w分量为1的为点，为0的为向量。
 
-#### 对应的代码文件夹
+#### 对应的代码文件
 - tuples
+#### 对应的代码文件夹
 - chapter01
 
 ### 2. Drawing on a canvas
@@ -34,15 +35,16 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 ![轨迹](chapter02/chapter02.png)
 
-#### 对应的代码文件夹
+#### 对应的代码文件
 - canvas
+#### 对应的代码文件夹
 - chapter02
 
 ## 3. Matrices
 
 建立基础矩阵，矩阵的运算操作
 
-#### 对应的代码文件夹
+#### 对应的代码文件
 - matrices
 
 ## 4. Matrix Transformation
@@ -53,8 +55,9 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 ![表盘](chapter04/chapter04.png)
 
-#### 对应的代码文件夹
+#### 对应的代码文件
 - transformations
+#### 对应的代码文件夹
 - chapter04
 
 ## 5. Ray-Sphere Intersections
@@ -65,11 +68,12 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 ![红球](chapter05/chapter05.png)
 
-#### 对应的代码文件夹
-- chapter05
+#### 对应的代码文件
 - intersections
 - objects
 - rays
+#### 对应的代码文件夹
+- chapter05
 
 ## 6. Light and Shading
 
@@ -79,10 +83,10 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 ![3d球](chapter06/chapter06.png)
 
-#### 对应的代码文件夹
-- chapter06
+#### 对应的代码文件
 - intersections
 - lights
 - objects/spheres
 - tuples
-
+#### 对应的代码文件夹
+- chapter06
