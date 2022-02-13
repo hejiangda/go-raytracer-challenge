@@ -6,7 +6,6 @@ replace tuples => ../tuples
 
 replace canvas => ../canvas
 
-require (
-	canvas v0.0.0-00010101000000-000000000000
-	tuples v0.0.0-00010101000000-000000000000
-)
+require raytracer v0.0.0-00010101000000-000000000000
+
+replace raytracer => ../raytracer
