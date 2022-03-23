@@ -2,6 +2,7 @@ package raytracer
 
 import (
 	"bufio"
+	"fmt"
 	"strings"
 	"testing"
 )
@@ -114,4 +115,33 @@ func TestPPMTerminatedByNewlineCharacter(t *testing.T) {
 		t.Fatal("PPM files are not terminated by a newline character")
 	}
 
+}
+func TestStringBuilder(t *testing.T) {
+	var builder strings.Builder
+	strs := []string{"Every moment", " of each day,",
+		" loving and", " missing you ", "dominates ",
+		"every inch of ", "my brain. "}
+	for _, str := range strs {
+		builder.WriteString(str)
+	}
+	builder.WriteString("\n")
+	fmt.Println(builder.String())
+
+	var x int = 200
+	var y int32 = 14
+	var z int64 = int64(x) + int64(y)
+	var a float32 = 2.1
+	var b float64 = 0.04
+	var c float64 = float64(a) + b
+	var m int64 = z + int64(c)
+	fmt.Println(z)
+	fmt.Println(c)
+	fmt.Println(m)
+
+	var e float64 = 214
+	func() {
+		n, e := 214, 214.214
+		fmt.Println(n, e)
+	}()
+	fmt.Println(e)
 }

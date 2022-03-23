@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"raytracer"
+	"github.com/hejiangda/go-raytracer-challenge/raytracer"
 )
 
 func main() {
