@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/hejiangda/go-raytracer-challenge/raytracer"
 	"math"
-	"raytracer"
 )
 
 func main() {
