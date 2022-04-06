@@ -60,3 +60,87 @@ func TestWorld_Intersect(t *testing.T) {
 		t.Fatal("Intersect failed! xs:", xs)
 	}
 }
+
+func TestPrepareComputations(t *testing.T) {
+	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
+	shape := NewSphere()
+	i := Intersection{4, shape}
+	comps := PrepareComputations(i, r)
+	if comps.T != i.T || comps.Object != i.Obj || !comps.Point.Equal(Point(0, 0, -1)) || !comps.EyeV.Equal(Vector(0, 0, -1)) || !comps.NormalV.Equal(Vector(0, 0, -1)) {
+		t.Fatal("failed")
+	}
+}
+func TestPrepareComputationsOutside(t *testing.T) {
+	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
+	shape := NewSphere()
+	i := Intersection{4, shape}
+	comps := PrepareComputations(i, r)
+	if comps.Inside == true {
+		t.Fatal("failed")
+	}
+}
+func TestPrepareComputationsInside(t *testing.T) {
+	r := NewRay(Point(0, 0, 0), Vector(0, 0, 1))
+	shape := NewSphere()
+	i := Intersection{1, shape}
+	comps := PrepareComputations(i, r)
+	if !comps.Point.Equal(Point(0, 0, 1)) || !comps.EyeV.Equal(Vector(0, 0, -1)) || !comps.Inside || !comps.NormalV.Equal(Vector(0, 0, -1)) {
+		t.Fatal("failed")
+	}
+}
+
+func TestWorld_ShadeHit(t *testing.T) {
+	w := NewWorld()
+	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
+	shape := w.Objects[0]
+	i := Intersection{4, shape}
+	comps := PrepareComputations(i, r)
+	c := w.ShadeHit(comps)
+	if !c.Equal(Color(0.38066, 0.47583, 0.2855)) {
+		t.Fatal("failed color:", c)
+	}
+}
+func TestWorld_ShadeHitInside(t *testing.T) {
+	w := NewWorld()
+	w.Lights[0] = NewPointLight(Point(0, 0.25, 0), Color(1, 1, 1))
+	r := NewRay(Point(0, 0, 0), Vector(0, 0, 1))
+	shape := w.Objects[1]
+	i := Intersection{0.5, shape}
+	comps := PrepareComputations(i, r)
+	c := w.ShadeHit(comps)
+	if !c.Equal(Color(0.90498, 0.90498, 0.90498)) {
+		t.Fatal("failed color:", c)
+	}
+}
+
+func TestWorld_ColorAt(t *testing.T) {
+	w := NewWorld()
+	r := NewRay(Point(0, 0, -5), Vector(0, 1, 0))
+	c := w.ColorAt(r)
+	if !c.Equal(Color(0, 0, 0)) {
+		t.Fatal("failed")
+	}
+}
+
+func TestWorld_ColorAt2(t *testing.T) {
+	w := NewWorld()
+	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
+	c := w.ColorAt(r)
+	if !c.Equal(Color(0.38066, 0.47583, 0.2855)) {
+		t.Fatal("failed color:", c)
+	}
+}
+
+func TestWorld_ColorAt3(t *testing.T) {
+	w := NewWorld()
+	outer := w.Objects[0]
+	outer.GetMaterial().Ambient = 1
+
+	inner := w.Objects[1]
+	inner.GetMaterial().Ambient = 1
+	r := NewRay(Point(0, 0, 0.75), Vector(0, 0, -1))
+	c := w.ColorAt(r)
+	if !c.Equal(inner.GetMaterial().Color) {
+		t.Fatal("failed color:", c)
+	}
+}

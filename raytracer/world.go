@@ -1,6 +1,8 @@
 package raytracer
 
-import "sort"
+import (
+	"sort"
+)
 
 type World struct {
 	// 目前只实现了点光源和球
@@ -9,7 +11,17 @@ type World struct {
 	Objects []PhysicalObject
 }
 
+type PreComputations struct {
+	T       float64
+	Object  PhysicalObject
+	Point   *Tuple
+	EyeV    *Tuple
+	NormalV *Tuple
+	Inside  bool
+}
+
 func NewWorld() (w *World) {
+
 	w = new(World)
 	w.Lights = append(w.Lights, NewPointLight(Point(-10, 10, -10), Color(1, 1, 1)))
 
@@ -31,5 +43,39 @@ func (w *World) Intersect(ray *Ray) (ret []Intersection) {
 	sort.Slice(ret, func(i, j int) bool {
 		return ret[i].T < ret[j].T
 	})
+	return
+}
+
+func PrepareComputations(i Intersection, ray *Ray) (comps PreComputations) {
+	comps.T = i.T
+	comps.Object = i.Obj
+
+	comps.Point = Position(ray, comps.T)
+	comps.EyeV = ray.Direction.Multiply(-1)
+	comps.NormalV = NormalAt(comps.Object.(*Sphere), comps.Point)
+
+	if Dot(comps.NormalV, comps.EyeV) < 0 {
+		comps.Inside = true
+		comps.NormalV = comps.NormalV.Multiply(-1)
+	}
+	return
+}
+
+func (w *World) ShadeHit(comps PreComputations) (color *Tuple) {
+	color = Color(0, 0, 0)
+	for _, light := range w.Lights {
+		color = color.Add(Lighting(comps.Object.GetMaterial(), light, comps.Point, comps.EyeV, comps.NormalV))
+	}
+	return
+}
+func (w *World) ColorAt(ray *Ray) (color *Tuple) {
+	color = Color(0, 0, 0)
+	inters := w.Intersect(ray)
+	for _, inter := range inters {
+		if inter.T > 0 {
+			comps := PrepareComputations(inter, ray)
+			return w.ShadeHit(comps)
+		}
+	}
 	return
 }
