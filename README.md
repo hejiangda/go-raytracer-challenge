@@ -18,7 +18,7 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 ## 目录结构说明
 各章节对应的文件夹：
 
-### 1. Tuples, Points, and Vectors
+### 1. Tuples, Points, And Vectors
 
 实现 Tuple 类型，Tuple 是 Point 和 Vector 的底层数据结构。w分量为1的为点，为0的为向量。
 
@@ -27,7 +27,7 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 #### 对应的代码文件夹
 - chapter01
 
-### 2. Drawing on a canvas
+### 2. Drawing On A Canvas
 
 实现 canvas 并能输出 ppm 文件
 
@@ -75,7 +75,7 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 #### 对应的代码文件夹
 - chapter05
 
-## 6. Light and Shading
+## 6. Light And Shading
 
 实现球的3d渲染，实现Phong光照模型
 
@@ -90,3 +90,19 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 - tuples
 #### 对应的代码文件夹
 - chapter06
+
+## 7. Making A Scene
+
+实现场景（管理光源和物体）、摄像机
+
+该章大作业是实现对一个场景的渲染
+
+![world](chapter07/chapter07.png)
+
+#### 对应的代码文件
+- world.go
+- transformations.go
+- camera.go
+
+#### 对应的代码文件夹
+- chapter07
