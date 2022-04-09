@@ -200,3 +200,50 @@ func TestFluentAPIs(t *testing.T) {
 		t.Fatal("chained transform failed")
 	}
 }
+
+func TestViewTransform(t *testing.T) {
+	from := Point(0, 0, 0)
+	to := Point(0, 0, -1)
+	up := Vector(0, 1, 0)
+	tt := ViewTransform(from, to, up)
+	if !IsSame(tt, EyeMatrix(4)) {
+		t.Fatal("tt is not equal to I")
+	}
+}
+
+func TestViewTransform2(t *testing.T) {
+	from := Point(0, 0, 0)
+	to := Point(0, 0, 1)
+	up := Vector(0, 1, 0)
+	tt := ViewTransform(from, to, up)
+	if !IsSame(tt, Scaling(-1, 1, -1)) {
+		t.Fatal("tt is not equal to Scaling(-1,1,-1)")
+	}
+}
+
+func TestViewTransform3(t *testing.T) {
+	from := Point(0, 0, 8)
+	to := Point(0, 0, 0)
+	up := Vector(0, 1, 0)
+	tt := ViewTransform(from, to, up)
+	if !IsSame(tt, Translation(0, 0, -8)) {
+		t.Fatal("tt is not equal to Translation(0,0,-8),tt:", tt, "Translation(0, 0, -8):", Translation(0, 0, -8))
+	}
+}
+
+func TestViewTransform4(t *testing.T) {
+	from := Point(1, 3, 2)
+	to := Point(4, -2, 8)
+	up := Vector(1, 1, 0)
+	tt := ViewTransform(from, to, up)
+	m := NewMatrix(4,
+		[][]float64{
+			{-0.50709, 0.50709, 0.67612, -2.36643},
+			{0.76772, 0.60609, 0.12122, -2.82843},
+			{-0.35857, 0.59761, -0.71714, 0.00000},
+			{0.00000, 0.00000, 0.00000, 1.00000},
+		})
+	if !IsSame(tt, m) {
+		t.Fatal("tt is not equal to m")
+	}
+}

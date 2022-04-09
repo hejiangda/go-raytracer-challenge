@@ -52,3 +52,15 @@ func Shearing(xy, xz, yx, yz, zx, zy float64) *Matrix {
 	ret.Data[2][1] = zy
 	return ret
 }
+func ViewTransform(from, to, up *Tuple) *Matrix {
+	forward := Normalize(Subtract(to, from))
+	left := Cross(forward, Normalize(up))
+	trueUp := Cross(left, forward)
+	orientation := NewMatrix(4, [][]float64{
+		{left.X, left.Y, left.Z, 0},
+		{trueUp.X, trueUp.Y, trueUp.Z, 0},
+		{-forward.X, -forward.Y, -forward.Z, 0},
+		{0, 0, 0, 1},
+	})
+	return orientation.Multiply(Translation(-from.X, -from.Y, -from.Z))
+}
