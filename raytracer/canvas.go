@@ -24,7 +24,9 @@ func NewCanvas(width, height int) *Canvas {
 	//}
 	return c
 }
-
+func (c *Canvas) WritePixel(x, y int, pixel *Tuple) {
+	c.Data[y*c.Width+x] = *pixel
+}
 func WritePixel(c *Canvas, x, y int, pixel *Tuple) {
 	c.Data[y*c.Width+x] = *pixel
 }
