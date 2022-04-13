@@ -70,3 +70,12 @@ Scenario: Intersecting a translated sphere with a ray
   When set_transform(s,translation(5,0,0))
     And xs <- intersect(s,r)
   Then xs.count = 0
+
+Scenario: The hit should offset the point
+  Given r <- ray(point(0,0,-5),vector(0,0,1))
+    And shape <- sphere() with:
+      | transform | translation(0,0,1) |
+    And i <- intersection(5,shape)
+  When comps <- prepare_computations(i,r)
+  Then comps.over_point.z < -EPSILON/2
+    And comps.point.z > comps.over_point.z

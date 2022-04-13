@@ -111,6 +111,15 @@ func Normalize(t *Tuple) *Tuple {
 	a.W = t.W / m
 	return a
 }
+func (t *Tuple) Normalize() *Tuple {
+	a := new(Tuple)
+	m := t.Magnitude()
+	a.X = t.X / m
+	a.Y = t.Y / m
+	a.Z = t.Z / m
+	a.W = t.W / m
+	return a
+}
 func Dot(a, b *Tuple) float64 {
 	return a.X*b.X + a.Y*b.Y + a.Z*b.Z + a.W*b.W
 }

@@ -144,3 +144,51 @@ func TestWorld_ColorAt3(t *testing.T) {
 		t.Fatal("failed color:", c)
 	}
 }
+
+func TestWorld_IsShadowed1(t *testing.T) {
+	w := NewWorld()
+	p := Point(0, 10, 0)
+	if w.IsShadowed(p) {
+		t.Fatal("failed")
+	}
+}
+func TestWorld_IsShadowed2(t *testing.T) {
+	w := NewWorld()
+	p := Point(10, -10, 10)
+	if !w.IsShadowed(p) {
+		t.Fatal("failed")
+	}
+}
+func TestWorld_IsShadowed3(t *testing.T) {
+	w := NewWorld()
+	p := Point(-20, 20, -20)
+	if w.IsShadowed(p) {
+		t.Fatal("failed")
+	}
+}
+
+func TestWorld_IsShadowed4(t *testing.T) {
+	w := NewWorld()
+	p := Point(-2, 2, -2)
+	if w.IsShadowed(p) {
+		t.Fatal("failed")
+	}
+}
+
+func TestWorld_ShadeHit2(t *testing.T) {
+	w := new(World)
+	w.Lights = append(w.Lights, NewPointLight(Point(0, 0, -10), Color(1, 1, 1)))
+	s1 := NewSphere()
+	w.Objects = append(w.Objects, s1)
+	s2 := NewSphere()
+	s2.Transform = Translation(0, 0, 10)
+	w.Objects = append(w.Objects, s2)
+	r := NewRay(Point(0, 0, 5), Vector(0, 0, 1))
+	i := Intersection{4, s2}
+	comps := PrepareComputations(i, r)
+	c := w.ShadeHit(comps)
+	if !c.Equal(Color(0.1, 0.1, 0.1)) {
+		t.Fatal("failed")
+	}
+
+}
