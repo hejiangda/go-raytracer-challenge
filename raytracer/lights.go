@@ -32,12 +32,15 @@ func (m *Material) Equal(n *Material) bool {
 	}
 	return false
 }
-func Lighting(m *Material, light *PointLight, position *Tuple, eyev *Tuple, normalv *Tuple) *Tuple {
+func Lighting(m *Material, light *PointLight, position *Tuple, eyev *Tuple, normalv *Tuple, inShadow bool) *Tuple {
+
 	effectiveColor := MultiplyColors(m.Color, light.Intensity)
 	lightv := Normalize(Subtract(light.Position, position))
 	ambient := effectiveColor.Multiply(m.Ambient)
 	lightDotNormal := Dot(lightv, normalv)
-
+	if inShadow {
+		return ambient
+	}
 	var diffuse, specular *Tuple
 
 	if lightDotNormal < 0 {

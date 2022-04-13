@@ -128,3 +128,14 @@ func TestIntersectATranslatedSphereWithARay(t *testing.T) {
 		t.Fatal("xs.count != 0")
 	}
 }
+
+func TestPrepareComputations2(t *testing.T) {
+	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
+	shape := NewSphere()
+	shape.Transform = Translation(0, 0, 1)
+	i := Intersection{5, shape}
+	comps := PrepareComputations(i, r)
+	if !(comps.OverPoint.Z < -Eps/2) || !(comps.Point.Z > comps.OverPoint.Z) {
+		t.Fatal("failed")
+	}
+}

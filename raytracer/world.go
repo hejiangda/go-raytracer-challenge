@@ -12,12 +12,13 @@ type World struct {
 }
 
 type PreComputations struct {
-	T       float64
-	Object  PhysicalObject
-	Point   *Tuple
-	EyeV    *Tuple
-	NormalV *Tuple
-	Inside  bool
+	T         float64
+	Object    PhysicalObject
+	Point     *Tuple
+	OverPoint *Tuple
+	EyeV      *Tuple
+	NormalV   *Tuple
+	Inside    bool
 }
 
 func NewWorld() (w *World) {
@@ -53,18 +54,19 @@ func PrepareComputations(i Intersection, ray *Ray) (comps PreComputations) {
 	comps.Point = Position(ray, comps.T)
 	comps.EyeV = ray.Direction.Multiply(-1)
 	comps.NormalV = NormalAt(comps.Object.(*Sphere), comps.Point)
-
 	if Dot(comps.NormalV, comps.EyeV) < 0 {
 		comps.Inside = true
 		comps.NormalV = comps.NormalV.Multiply(-1)
 	}
+
+	comps.OverPoint = comps.Point.Add(comps.NormalV.Multiply(Eps))
 	return
 }
 
 func (w *World) ShadeHit(comps PreComputations) (color *Tuple) {
 	color = Color(0, 0, 0)
 	for _, light := range w.Lights {
-		color = color.Add(Lighting(comps.Object.GetMaterial(), light, comps.Point, comps.EyeV, comps.NormalV))
+		color = color.Add(Lighting(comps.Object.GetMaterial(), light, comps.Point, comps.EyeV, comps.NormalV, w.IsShadowed(comps.OverPoint)))
 	}
 	return
 }
@@ -78,4 +80,20 @@ func (w *World) ColorAt(ray *Ray) (color *Tuple) {
 		}
 	}
 	return
+}
+func (w *World) IsShadowed(point *Tuple) bool {
+	for _, light := range w.Lights {
+		v := light.Position.Subtract(point)
+		distance := v.Magnitude()
+		direction := v.Normalize()
+
+		r := NewRay(point, direction)
+		intersections := w.Intersect(r)
+
+		h, err := Hit(intersections)
+		if err == nil && h.T < distance {
+			return true
+		}
+	}
+	return false
 }
