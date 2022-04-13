@@ -106,3 +106,16 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 #### 对应的代码文件夹
 - chapter07
+
+## 8. Shadows
+
+实现阴影
+
+![world](chapter08/chapter08.png)
+
+#### 对应的代码文件
+- lights.go
+- world.go
+
+#### 对应的代码文件夹
+- chapter08
