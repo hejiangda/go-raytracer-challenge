@@ -42,7 +42,7 @@ func main() {
 	camera.Transform = raytracer.ViewTransform(raytracer.Point(0, 1.5, -5), raytracer.Point(0, 1, 0), raytracer.Vector(0, 1, 0))
 
 	canvas := camera.Render(world)
-	err := canvas.SaveFile("chapter08.ppm")
+	err := canvas.SaveFile("chapter09.ppm")
 	if err != nil {
 		return
 	}
