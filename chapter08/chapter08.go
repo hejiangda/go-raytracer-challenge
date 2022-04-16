@@ -54,7 +54,7 @@ func main() {
 
 	canvas := camera.Render(world)
 
-	err := canvas.SaveFile("chapter08.ppm")
+	err := canvas.SaveFile("chapter09.ppm")
 	if err != nil {
 		return
 	}

@@ -119,3 +119,14 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 #### 对应的代码文件夹
 - chapter08
+
+## 9. Planes
+
+用shape接口重构，统一表示形状
+实现对平面的表示
+
+![plane](chapter09/chapter09.png)
+
+#### 对应的代码文件
+- planes.go
+- shapes.go
