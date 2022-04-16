@@ -206,7 +206,7 @@ func TestViewTransform(t *testing.T) {
 	to := Point(0, 0, -1)
 	up := Vector(0, 1, 0)
 	tt := ViewTransform(from, to, up)
-	if !IsSame(tt, EyeMatrix(4)) {
+	if !tt.Equal(EyeMatrix(4)) {
 		t.Fatal("tt is not equal to I")
 	}
 }
@@ -216,7 +216,7 @@ func TestViewTransform2(t *testing.T) {
 	to := Point(0, 0, 1)
 	up := Vector(0, 1, 0)
 	tt := ViewTransform(from, to, up)
-	if !IsSame(tt, Scaling(-1, 1, -1)) {
+	if !tt.Equal(Scaling(-1, 1, -1)) {
 		t.Fatal("tt is not equal to Scaling(-1,1,-1)")
 	}
 }
@@ -226,7 +226,7 @@ func TestViewTransform3(t *testing.T) {
 	to := Point(0, 0, 0)
 	up := Vector(0, 1, 0)
 	tt := ViewTransform(from, to, up)
-	if !IsSame(tt, Translation(0, 0, -8)) {
+	if !tt.Equal(Translation(0, 0, -8)) {
 		t.Fatal("tt is not equal to Translation(0,0,-8),tt:", tt, "Translation(0, 0, -8):", Translation(0, 0, -8))
 	}
 }
@@ -243,7 +243,7 @@ func TestViewTransform4(t *testing.T) {
 			{-0.35857, 0.59761, -0.71714, 0.00000},
 			{0.00000, 0.00000, 0.00000, 1.00000},
 		})
-	if !IsSame(tt, m) {
+	if !tt.Equal(m) {
 		t.Fatal("tt is not equal to m")
 	}
 }

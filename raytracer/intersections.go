@@ -7,14 +7,14 @@ import (
 
 type Intersection struct {
 	T   float64
-	Obj PhysicalObject
+	Obj Shape
 }
 
-type PhysicalObject interface {
-	Intersect(r *Ray) (ret []float64)
-	NormalAt(p *Tuple) *Tuple
-	GetMaterial() *Material
-}
+//type PhysicalObject interface {
+//	Intersect(r *Ray) (ret []float64)
+//	NormalAt(p *Tuple) *Tuple
+//	GetMaterial() *Material
+//}
 
 func Intersections(args ...Intersection) (ret []Intersection) {
 	for _, arg := range args {
@@ -23,13 +23,13 @@ func Intersections(args ...Intersection) (ret []Intersection) {
 	return
 }
 
-func Intersect(obj PhysicalObject, r *Ray) (ret []Intersection) {
-	arr := obj.Intersect(r)
-	for _, t := range arr {
-		ret = append(ret, Intersection{t, obj})
-	}
-	return
-}
+//func (s *Shape)Intersect( r *Ray) (ret []Intersection) {
+//	arr := s.Intersect(r)
+//	for _, t := range arr {
+//		ret = append(ret, Intersection{t, obj})
+//	}
+//	return
+//}
 
 func Hit(xs []Intersection) (ret Intersection, err error) {
 	sort.Slice(xs, func(i, j int) bool {

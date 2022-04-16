@@ -4,16 +4,19 @@ import (
 	"sort"
 )
 
+var WorldId = 0
+
 type World struct {
 	// 目前只实现了点光源和球
 	// 就先这样吧
+	Id      int
 	Lights  []*PointLight
-	Objects []PhysicalObject
+	Objects []Shape
 }
 
 type PreComputations struct {
 	T         float64
-	Object    PhysicalObject
+	Object    Shape
 	Point     *Tuple
 	OverPoint *Tuple
 	EyeV      *Tuple
@@ -22,8 +25,16 @@ type PreComputations struct {
 }
 
 func NewWorld() (w *World) {
+	WorldId++
+	return &World{
+		Id:      WorldId,
+		Lights:  nil,
+		Objects: nil,
+	}
+}
+func DefaultWorld() (w *World) {
 
-	w = new(World)
+	w = NewWorld()
 	w.Lights = append(w.Lights, NewPointLight(Point(-10, 10, -10), Color(1, 1, 1)))
 
 	s1 := NewSphere()
@@ -39,7 +50,7 @@ func NewWorld() (w *World) {
 
 func (w *World) Intersect(ray *Ray) (ret []Intersection) {
 	for _, object := range w.Objects {
-		ret = append(ret, Intersect(object, ray)...)
+		ret = append(ret, object.Intersect(ray)...)
 	}
 	sort.Slice(ret, func(i, j int) bool {
 		return ret[i].T < ret[j].T
@@ -51,9 +62,9 @@ func PrepareComputations(i Intersection, ray *Ray) (comps PreComputations) {
 	comps.T = i.T
 	comps.Object = i.Obj
 
-	comps.Point = Position(ray, comps.T)
+	comps.Point = ray.Position(comps.T)
 	comps.EyeV = ray.Direction.Multiply(-1)
-	comps.NormalV = NormalAt(comps.Object.(*Sphere), comps.Point)
+	comps.NormalV = comps.Object.NormalAt(comps.Point)
 	if Dot(comps.NormalV, comps.EyeV) < 0 {
 		comps.Inside = true
 		comps.NormalV = comps.NormalV.Multiply(-1)

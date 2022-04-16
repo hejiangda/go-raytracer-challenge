@@ -18,16 +18,16 @@ func TestRay(t *testing.T) {
 
 func TestPosition(t *testing.T) {
 	r := NewRay(Point(2, 3, 4), Vector(1, 0, 0))
-	if !Point(2, 3, 4).Equal(Position(r, 0)) {
+	if !Point(2, 3, 4).Equal(r.Position(0)) {
 		t.Fatal("wrong position")
 	}
-	if !Point(3, 3, 4).Equal(Position(r, 1)) {
+	if !Point(3, 3, 4).Equal(r.Position(1)) {
 		t.Fatal("wrong position")
 	}
-	if !Point(1, 3, 4).Equal(Position(r, -1)) {
+	if !Point(1, 3, 4).Equal(r.Position(-1)) {
 		t.Fatal("wrong position")
 	}
-	if !Point(4.5, 3, 4).Equal(Position(r, 2.5)) {
+	if !Point(4.5, 3, 4).Equal(r.Position(2.5)) {
 		t.Fatal("wrong position")
 	}
 }
@@ -35,7 +35,7 @@ func TestPosition(t *testing.T) {
 func TestTranslatingRay(t *testing.T) {
 	r := NewRay(Point(1, 2, 3), Vector(0, 1, 0))
 	m := Translation(3, 4, 5)
-	r2 := Transform(r, m)
+	r2 := r.Transform(m)
 	if !r2.Origin.Equal(Point(4, 6, 8)) {
 		t.Fatal("r2.origin != point(4,6,8)")
 	}
@@ -47,7 +47,7 @@ func TestTranslatingRay(t *testing.T) {
 func TestScalingRay(t *testing.T) {
 	r := NewRay(Point(1, 2, 3), Vector(0, 1, 0))
 	m := Scaling(2, 3, 4)
-	r2 := Transform(r, m)
+	r2 := r.Transform(m)
 	if !r2.Origin.Equal(Point(2, 6, 12)) {
 		t.Fatal("r2.origin != point(2,6,12)")
 	}

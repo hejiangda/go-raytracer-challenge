@@ -11,7 +11,7 @@ func TestNewCamera(t *testing.T) {
 	fieldOfView := math.Pi / 2
 	identityMatrix := EyeMatrix(4)
 	c := NewCamera(hsize, vsize, fieldOfView)
-	if c.HSize != hsize || c.VSize != vsize || c.FieldOfView != fieldOfView || !IsSame(c.Transform, identityMatrix) {
+	if c.HSize != hsize || c.VSize != vsize || c.FieldOfView != fieldOfView || !c.Transform.Equal(identityMatrix) {
 		t.Fatal("failed! c:", c)
 	}
 }

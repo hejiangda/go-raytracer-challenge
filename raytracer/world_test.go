@@ -1,13 +1,12 @@
 package raytracer
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestNewWorld(t *testing.T) {
 
-	w := NewWorld()
+	w := DefaultWorld()
 
 	pointLight := NewPointLight(Point(-10, 10, -10), Color(1, 1, 1))
 	var ok = false
@@ -34,10 +33,10 @@ func TestNewWorld(t *testing.T) {
 		switch object.(type) {
 		case *Sphere:
 			s := object.(*Sphere)
-			if IsSame(s.Transform, s1.Transform) && s.Material.Equal(s1.Material) {
+			if s.Transform.Equal(s1.Transform) && s.Material.Equal(s1.Material) {
 				ok1 = true
 			}
-			if IsSame(s.Transform, s2.Transform) && s.Material.Equal(s2.Material) {
+			if s.Transform.Equal(s2.Transform) && s.Material.Equal(s2.Material) {
 				ok2 = true
 			}
 		}
@@ -52,10 +51,10 @@ func TestNewWorld(t *testing.T) {
 }
 
 func TestWorld_Intersect(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
 	xs := w.Intersect(r)
-	fmt.Println("xs len", len(xs))
+	//fmt.Println("xs len", len(xs))
 	if xs[0].T != 4 || xs[1].T != 4.5 || xs[2].T != 5.5 || xs[3].T != 6 {
 		t.Fatal("Intersect failed! xs:", xs)
 	}
@@ -90,7 +89,7 @@ func TestPrepareComputationsInside(t *testing.T) {
 }
 
 func TestWorld_ShadeHit(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
 	shape := w.Objects[0]
 	i := Intersection{4, shape}
@@ -101,7 +100,7 @@ func TestWorld_ShadeHit(t *testing.T) {
 	}
 }
 func TestWorld_ShadeHitInside(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	w.Lights[0] = NewPointLight(Point(0, 0.25, 0), Color(1, 1, 1))
 	r := NewRay(Point(0, 0, 0), Vector(0, 0, 1))
 	shape := w.Objects[1]
@@ -114,7 +113,7 @@ func TestWorld_ShadeHitInside(t *testing.T) {
 }
 
 func TestWorld_ColorAt(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	r := NewRay(Point(0, 0, -5), Vector(0, 1, 0))
 	c := w.ColorAt(r)
 	if !c.Equal(Color(0, 0, 0)) {
@@ -123,7 +122,7 @@ func TestWorld_ColorAt(t *testing.T) {
 }
 
 func TestWorld_ColorAt2(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
 	c := w.ColorAt(r)
 	if !c.Equal(Color(0.38066, 0.47583, 0.2855)) {
@@ -132,7 +131,7 @@ func TestWorld_ColorAt2(t *testing.T) {
 }
 
 func TestWorld_ColorAt3(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	outer := w.Objects[0]
 	outer.GetMaterial().Ambient = 1
 
@@ -146,21 +145,21 @@ func TestWorld_ColorAt3(t *testing.T) {
 }
 
 func TestWorld_IsShadowed1(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	p := Point(0, 10, 0)
 	if w.IsShadowed(p) {
 		t.Fatal("failed")
 	}
 }
 func TestWorld_IsShadowed2(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	p := Point(10, -10, 10)
 	if !w.IsShadowed(p) {
 		t.Fatal("failed")
 	}
 }
 func TestWorld_IsShadowed3(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	p := Point(-20, 20, -20)
 	if w.IsShadowed(p) {
 		t.Fatal("failed")
@@ -168,7 +167,7 @@ func TestWorld_IsShadowed3(t *testing.T) {
 }
 
 func TestWorld_IsShadowed4(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	p := Point(-2, 2, -2)
 	if w.IsShadowed(p) {
 		t.Fatal("failed")

@@ -8,9 +8,9 @@ type Ray struct {
 func NewRay(origin, direction *Tuple) *Ray {
 	return &Ray{origin, direction}
 }
-func Position(r *Ray, t float64) *Tuple {
+func (r *Ray) Position(t float64) *Tuple {
 	return Add(r.Origin, r.Direction.Multiply(t))
 }
-func Transform(r *Ray, m *Matrix) *Ray {
+func (r *Ray) Transform(m *Matrix) *Ray {
 	return NewRay(MultiplyTuple(m, r.Origin), MultiplyTuple(m, r.Direction))
 }

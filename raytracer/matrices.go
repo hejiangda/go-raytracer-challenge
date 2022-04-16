@@ -35,17 +35,17 @@ func EyeMatrix(dim int) *Matrix {
 	}
 	return m
 }
-func IsSame(m1, m2 *Matrix) bool {
-	if m1.Dim != m2.Dim || m1.Dim == 0 || m2.Dim == 0 {
+func (m *Matrix) Equal(m2 *Matrix) bool {
+	if m.Dim != m2.Dim || m.Dim == 0 || m2.Dim == 0 {
 		return false
 	}
-	if len(m1.Data) != len(m2.Data) {
+	if len(m.Data) != len(m2.Data) {
 		return false
 	}
-	if (m1.Data == nil) || (m2.Data == nil) {
+	if (m.Data == nil) || (m2.Data == nil) {
 		return false
 	}
-	for i, v := range m1.Data {
+	for i, v := range m.Data {
 		for j, w := range v {
 			if !AlmostEqual(w, m2.Data[i][j], Eps) {
 				return false
