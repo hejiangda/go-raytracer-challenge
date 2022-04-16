@@ -8,9 +8,11 @@ import (
 var SphereId = 0
 
 type Sphere struct {
-	Id        int
-	Transform *Matrix
-	Material  *Material
+	Id          int
+	Transform   *Matrix
+	Material    *Material
+	localRay    *Ray
+	localNormal *Tuple
 }
 
 func NewSphere() *Sphere {
@@ -21,16 +23,24 @@ func NewSphere() *Sphere {
 		Material:  NewMaterial(),
 	}
 }
-func (s *Sphere) Intersect(r *Ray) (ret []float64) {
-	//return Intersect(s, r)
+
+func (s *Sphere) Intersect(r *Ray) (ret []Intersection) {
+	arr := s.localIntersect(r)
+	for _, t := range arr {
+		ret = append(ret, Intersection{t, s})
+	}
+	return
+}
+func (s *Sphere) localIntersect(r *Ray) (ret []float64) {
 	inv, err := Inverse(s.Transform)
 	if err != nil {
 		log.Fatal(err)
 	}
-	r = Transform(r, inv)
-	sphereToRay := Subtract(r.Origin, Point(0, 0, 0))
-	a := Dot(r.Direction, r.Direction)
-	b := 2 * Dot(r.Direction, sphereToRay)
+	localRay := r.Transform(inv)
+	s.localRay = localRay
+	sphereToRay := Subtract(localRay.Origin, Point(0, 0, 0))
+	a := Dot(localRay.Direction, localRay.Direction)
+	b := 2 * Dot(localRay.Direction, sphereToRay)
 	c := Dot(sphereToRay, sphereToRay) - 1
 	discriminant := b*b - 4*a*c
 	if discriminant < 0 {
@@ -48,33 +58,37 @@ func (s *Sphere) Intersect(r *Ray) (ret []float64) {
 	return
 }
 
-//func Intersect(s *Sphere, r *Ray) (ret []float64) {
-//
-//}
+func (s *Sphere) GetTransform() *Matrix {
+	return s.Transform
+}
 func (s *Sphere) SetTransform(t *Matrix) {
 	s.Transform = t
 }
-func SetTransform(s *Sphere, t *Matrix) {
-	s.Transform = t
-}
+
 func (s *Sphere) NormalAt(p *Tuple) *Tuple {
-	return NormalAt(s, p)
+	return s.localNormalAt(p)
 }
+
 func (s *Sphere) GetMaterial() *Material {
 	return s.Material
 }
-func NormalAt(s *Sphere, p *Tuple) *Tuple {
+func (s *Sphere) SetMaterial(m *Material) {
+	s.Material = m
+}
+func (s *Sphere) localNormalAt(p *Tuple) *Tuple {
 	inv, err := Inverse(s.Transform)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// 世界坐标转换到物体坐标
+	// localPoint
 	objectPoint := MultiplyTuple(inv, p)
 	// 计算物体坐标系法向
-	objectNormal := Subtract(objectPoint, Point(0, 0, 0))
+	localNormal := Subtract(objectPoint, Point(0, 0, 0))
+	s.localNormal = localNormal
 	tinv := Transpose(inv)
 	// 物体坐标系法向转换到世界坐标系下的法向
-	worldNormal := MultiplyTuple(tinv, objectNormal)
+	worldNormal := MultiplyTuple(tinv, localNormal)
 	worldNormal.W = 0
 	return Normalize(worldNormal)
 }

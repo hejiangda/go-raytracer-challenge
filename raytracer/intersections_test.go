@@ -37,7 +37,7 @@ func TestAggregatingIntersections(t *testing.T) {
 func TestIntersectSetsTheObjectsOnTheIntersection(t *testing.T) {
 	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
 	s := NewSphere()
-	xs := Intersect(s, r)
+	xs := s.Intersect(r)
 	if len(xs) != 2 {
 		t.Fatal("len(xs)!=2")
 	}
@@ -107,7 +107,7 @@ func TestIntersectAScaledSphereWithARay(t *testing.T) {
 	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
 	s := NewSphere()
 	s.SetTransform(Scaling(2, 2, 2))
-	xs := Intersect(s, r)
+	xs := s.Intersect(r)
 	if len(xs) != 2 {
 		t.Fatal("xs.count != 2")
 	}

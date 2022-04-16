@@ -81,7 +81,7 @@ func TestMatrixCompareSame(t *testing.T) {
 		{9, 8, 7, 6},
 		{5, 4, 3, 2},
 	})
-	if !IsSame(m1, m2) {
+	if !m1.Equal(m2) {
 		t.Fatal("m1 m2 should be same")
 	}
 }
@@ -99,7 +99,7 @@ func TestMatrixCompareDifferent(t *testing.T) {
 		{8, 7, 6, 5},
 		{4, 3, 2, 1},
 	})
-	if IsSame(m1, m2) {
+	if m1.Equal(m2) {
 		t.Fatal("m1 m2 should be different")
 	}
 }
@@ -117,7 +117,7 @@ func TestMultiply(t *testing.T) {
 		{1, 2, 7, 8},
 	})
 	n := Multiply(m1, m2)
-	if !IsSame(n, NewMatrix(4, [][]float64{
+	if !n.Equal(NewMatrix(4, [][]float64{
 		{20, 22, 50, 48},
 		{44, 54, 114, 108},
 		{40, 58, 110, 102},
@@ -150,7 +150,7 @@ func TestMultiplyIdentityMatrix(t *testing.T) {
 	})
 	n := EyeMatrix(4)
 	res := Multiply(m, n)
-	if !IsSame(res, m) {
+	if !res.Equal(m) {
 		t.Fatal("matrix multiply with identify matrix is not equal to itself")
 	}
 }
@@ -172,7 +172,7 @@ func TestTranspose(t *testing.T) {
 		{0, 0, 5, 8},
 	})
 	n := Transpose(m)
-	if !IsSame(n, NewMatrix(4, [][]float64{
+	if !n.Equal(NewMatrix(4, [][]float64{
 		{0, 9, 1, 0},
 		{9, 8, 8, 0},
 		{3, 0, 5, 5},
@@ -184,7 +184,7 @@ func TestTranspose(t *testing.T) {
 func TestTransposeIdentityMatrix(t *testing.T) {
 	m := EyeMatrix(4)
 	n := Transpose(m)
-	if !IsSame(n, m) {
+	if !n.Equal(m) {
 		t.Fatal("transpose identity matrix is not equal to itself")
 	}
 }
@@ -204,7 +204,7 @@ func TestSubmatrix3(t *testing.T) {
 		{0, 6, -3},
 	})
 	n := Submatrix(m, 0, 2)
-	if !IsSame(n, NewMatrix(2, [][]float64{
+	if !n.Equal(NewMatrix(2, [][]float64{
 		{-3, 2},
 		{0, 6},
 	})) {
@@ -219,7 +219,7 @@ func TestSubmatrix4(t *testing.T) {
 		{-7, 1, -1, 1},
 	})
 	n := Submatrix(m, 2, 1)
-	if !IsSame(n, NewMatrix(3, [][]float64{
+	if !n.Equal(NewMatrix(3, [][]float64{
 		{-6, 1, 6},
 		{-8, 8, 6},
 		{-7, -1, 1},
@@ -352,7 +352,7 @@ func TestInverse(t *testing.T) {
 	if !AlmostEqual(b.Data[2][3], 105.0/532.0, Eps) {
 		t.Fatal("inverted matrix wrong,b:", b)
 	}
-	if !IsSame(b, NewMatrix(4, [][]float64{
+	if !b.Equal(NewMatrix(4, [][]float64{
 		{0.21805, 0.45113, 0.24060, -0.04511},
 		{-0.80827, -1.45677, -0.44361, 0.52068},
 		{-0.07895, -0.22368, -0.05263, 0.19737},
@@ -370,12 +370,12 @@ func TestInverse2(t *testing.T) {
 		{-3, 0, -9, -4},
 	})
 	b, err := Inverse(m)
-	if !IsSame(NewMatrix(4, [][]float64{
+	if !NewMatrix(4, [][]float64{
 		{-0.15385, -0.15385, -0.28205, -0.53846},
 		{-0.07692, 0.12308, 0.02564, 0.03077},
 		{0.35897, 0.35897, 0.43590, 0.92308},
 		{-0.69231, -0.69231, -0.76923, -1.92308},
-	}), b) || err != nil {
+	}).Equal(b) || err != nil {
 		t.Fatal("inverse failed")
 	}
 }
@@ -387,12 +387,12 @@ func TestInverse3(t *testing.T) {
 		{-7, 6, 6, 2},
 	})
 	b, err := Inverse(m)
-	if !IsSame(NewMatrix(4, [][]float64{
+	if !NewMatrix(4, [][]float64{
 		{-0.04074, -0.07778, 0.14444, -0.22222},
 		{-0.07778, 0.03333, 0.36667, -0.33333},
 		{-0.02901, -0.14630, -0.10926, 0.12963},
 		{0.17778, 0.06667, -0.26667, 0.33333},
-	}), b) || err != nil {
+	}).Equal(b) || err != nil {
 		t.Fatal("inverse failed")
 	}
 }
@@ -414,7 +414,7 @@ func TestMutiplyAProductByItsInverse(t *testing.T) {
 	if err != nil {
 		t.Fatal("calculate inverse failed")
 	}
-	if !IsSame(Multiply(c, inv), a) {
+	if !Multiply(c, inv).Equal(a) {
 		t.Fatal("c*b^-1!=a")
 	}
 }
