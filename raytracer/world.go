@@ -77,7 +77,7 @@ func PrepareComputations(i Intersection, ray *Ray) (comps PreComputations) {
 func (w *World) ShadeHit(comps PreComputations) (color *Tuple) {
 	color = Color(0, 0, 0)
 	for _, light := range w.Lights {
-		color = color.Add(Lighting(comps.Object.GetMaterial(), light, comps.Point, comps.EyeV, comps.NormalV, w.IsShadowed(comps.OverPoint)))
+		color = color.Add(Lighting(comps.Object.GetMaterial(), comps.Object, light, comps.Point, comps.EyeV, comps.NormalV, w.IsShadowed(comps.OverPoint)))
 	}
 	return
 }
