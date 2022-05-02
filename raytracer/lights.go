@@ -14,13 +14,14 @@ type Material struct {
 	Diffuse   float64
 	Specular  float64
 	Shininess float64
+	Pattern   Pattern
 }
 
 func NewPointLight(p, i *Tuple) *PointLight {
 	return &PointLight{p, i}
 }
 func NewMaterial() *Material {
-	return &Material{Color(1, 1, 1), 0.1, 0.9, 0.9, 200}
+	return &Material{Color(1, 1, 1), 0.1, 0.9, 0.9, 200, nil}
 }
 func (m *Material) Equal(n *Material) bool {
 	if m.Color.Equal(n.Color) &&
@@ -32,9 +33,16 @@ func (m *Material) Equal(n *Material) bool {
 	}
 	return false
 }
-func Lighting(m *Material, light *PointLight, position *Tuple, eyev *Tuple, normalv *Tuple, inShadow bool) *Tuple {
+func Lighting(m *Material, obj Shape, light *PointLight, position *Tuple, eyev *Tuple, normalv *Tuple, inShadow bool) *Tuple {
+	var color *Tuple
+	if m.Pattern != nil {
+		//color = m.Pattern.StripeAt(position)
+		color = m.Pattern.AtShape(obj, position)
+	} else {
+		color = m.Color
+	}
 
-	effectiveColor := MultiplyColors(m.Color, light.Intensity)
+	effectiveColor := MultiplyColors(color, light.Intensity)
 	lightv := Normalize(Subtract(light.Position, position))
 	ambient := effectiveColor.Multiply(m.Ambient)
 	lightDotNormal := Dot(lightv, normalv)

@@ -1,3 +1,3 @@
 module github.com/hejiangda/go-raytracer-challenge/raytracer
 
-go 1.17
+go 1.18

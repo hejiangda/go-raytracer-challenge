@@ -130,3 +130,19 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 #### 对应的代码文件
 - planes.go
 - shapes.go
+
+#### 对应的代码文件夹
+- chapter09
+
+## 10. Patterns
+
+通过Pattern接口，实现了四种图案（条纹、渐变、圆环、棋盘）
+
+![patterns](chapter10/chapter10.png)
+
+#### 对应的代码文件
+- patterns.go
+- lights.go
+
+#### 对应的代码文件夹
+- chapter10

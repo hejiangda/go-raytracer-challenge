@@ -23,14 +23,6 @@ func Intersections(args ...Intersection) (ret []Intersection) {
 	return
 }
 
-//func (s *Shape)Intersect( r *Ray) (ret []Intersection) {
-//	arr := s.Intersect(r)
-//	for _, t := range arr {
-//		ret = append(ret, Intersection{t, obj})
-//	}
-//	return
-//}
-
 func Hit(xs []Intersection) (ret Intersection, err error) {
 	sort.Slice(xs, func(i, j int) bool {
 		return xs[i].T < xs[j].T

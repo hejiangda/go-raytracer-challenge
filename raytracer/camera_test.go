@@ -55,7 +55,7 @@ func TestRayForPixel3(t *testing.T) {
 }
 
 func TestCamera_Render(t *testing.T) {
-	w := NewWorld()
+	w := DefaultWorld()
 	c := NewCamera(11, 11, math.Pi/2)
 	from := Point(0, 0, -5)
 	to := Point(0, 0, 0)
