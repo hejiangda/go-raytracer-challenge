@@ -141,3 +141,12 @@ func TestSphereAssignedAMaterial(t *testing.T) {
 		t.Fatal("s.material != m")
 	}
 }
+
+func TestGlassSphere(t *testing.T) {
+	s := GlassSphere()
+	if !s.Transform.Equal(EyeMatrix(4)) ||
+		!AlmostEqual(s.Material.Transparency, 1.0, Eps) ||
+		!AlmostEqual(s.Material.RefractiveIndex, 1.5, Eps) {
+		t.Fatal()
+	}
+}

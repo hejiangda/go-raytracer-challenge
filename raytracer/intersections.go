@@ -2,6 +2,7 @@ package raytracer
 
 import (
 	"errors"
+	"math"
 	"sort"
 )
 
@@ -34,4 +35,21 @@ func Hit(xs []Intersection) (ret Intersection, err error) {
 		}
 	}
 	return ret, errors.New("no hit")
+}
+
+func Schlick(comps PreComputations) float64 {
+	cos := Dot(comps.EyeV, comps.NormalV)
+	if comps.N1 > comps.N2 {
+		n := comps.N1 / comps.N2
+		sin2T := n * n * (1.0 - cos*cos)
+		if sin2T >= 1.0 {
+			return 1.0
+		}
+		cosT := math.Sqrt(1.0 - sin2T)
+		cos = cosT
+	}
+
+	r0 := ((comps.N1 - comps.N2) / (comps.N1 + comps.N2)) * ((comps.N1 - comps.N2) / (comps.N1 + comps.N2))
+
+	return r0 + (1-r0)*math.Pow(1-cos, 5)
 }
