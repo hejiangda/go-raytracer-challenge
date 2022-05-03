@@ -76,3 +76,11 @@ func TestLightingWithTheSurfaceInShadow(t *testing.T) {
 		t.Fatal("failed")
 	}
 }
+
+func TestTransparencyAndRefractiveIndex(t *testing.T) {
+	m := NewMaterial()
+	if !AlmostEqual(m.Transparency, 0, Eps) ||
+		!AlmostEqual(m.RefractiveIndex, 1.0, Eps) {
+		t.Fatal("failed")
+	}
+}

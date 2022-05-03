@@ -146,3 +146,17 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 #### 对应的代码文件夹
 - chapter10
+
+## 11. Reflection And Refraction
+
+实现反射和折射
+
+![Reflection&Refraction](chapter11/chapter11.png)
+
+#### 对应的代码文件
+- intersections.go
+- material.go
+- world.go
+
+#### 对应的代码文件夹
+- chapter11

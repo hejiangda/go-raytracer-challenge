@@ -47,10 +47,15 @@ func (p *Plane) Intersect(r *Ray) (ret []Intersection) {
 	return
 }
 func (p *Plane) localIntersect(r *Ray) (ret []float64) {
-	if math.Abs(r.Direction.Y) < Eps {
+	inv, err := Inverse(p.Transform)
+	if err != nil {
+		log.Fatal(err)
+	}
+	localRay := r.Transform(inv)
+	if math.Abs(localRay.Direction.Y) < Eps {
 		return
 	}
-	t := -r.Origin.Y / r.Direction.Y
+	t := -localRay.Origin.Y / localRay.Direction.Y
 	ret = append(ret, t)
 	return
 }

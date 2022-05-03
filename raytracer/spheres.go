@@ -92,3 +92,10 @@ func (s *Sphere) localNormalAt(p *Tuple) *Tuple {
 	worldNormal.W = 0
 	return Normalize(worldNormal)
 }
+
+func GlassSphere() (s *Sphere) {
+	s = NewSphere()
+	s.Material.Transparency = 1.0
+	s.Material.RefractiveIndex = 1.5
+	return s
+}
