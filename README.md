@@ -172,3 +172,16 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 #### 对应的代码文件夹
 - chapter12
+
+## 13. Cylinders
+
+实现圆柱和圆锥
+
+![cylinder](chapter13/chapter13.png)
+
+#### 对应的代码文件
+- cylinder.go
+- cones.go
+
+#### 对应的代码文件夹
+- chapter13
