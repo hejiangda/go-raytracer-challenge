@@ -213,7 +213,7 @@ func TestSchlickApproximationWithAPerpendicularViewingAngle(t *testing.T) {
 	xs := Intersections(Intersection{-1, shape}, Intersection{1, shape})
 	comps := PrepareComputations(xs[1], r, xs)
 	reflectance := Schlick(comps)
-	if !(reflectance == 0.04) {
+	if !AlmostEqual(reflectance, 0.04, Eps) {
 		t.Fatal()
 	}
 }

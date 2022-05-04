@@ -1,7 +1,6 @@
 package raytracer
 
 import (
-	"fmt"
 	"math"
 	"testing"
 )
@@ -353,7 +352,7 @@ func TestShadeHitWithATransparentMaterial(t *testing.T) {
 	if !color.Equal(Color(0.93642, 0.68642, 0.68642)) {
 		t.Fatal(color)
 	}
-	fmt.Println(color)
+	//fmt.Println(color)
 }
 func TestShadeHitWithAReflectiveTransparentMaterial(t *testing.T) {
 	w := DefaultWorld()
