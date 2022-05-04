@@ -8,28 +8,28 @@ import (
 func TestRayIntersectsSphereAtTwoPoints(t *testing.T) {
 	r := NewRay(Point(0, 0, -5), Vector(0, 0, 1))
 	s := NewSphere()
-	xs := s.localIntersect(r)
-	if len(xs) != 2 {
+	t1, t2, err := s.localIntersect(r)
+	if err != nil {
 		t.Fatal("intersect error")
 	}
-	if !AlmostEqual(xs[0], 4.0, Eps) {
-		t.Fatal("intersect error,xs[0]:", xs[0])
+	if !AlmostEqual(t1, 4.0, Eps) {
+		t.Fatal("intersect error,xs[0]:", t1)
 	}
-	if !AlmostEqual(xs[1], 6.0, Eps) {
+	if !AlmostEqual(t2, 6.0, Eps) {
 		t.Fatal("intersect error")
 	}
 }
 func TestRayIntersectsSphereAtATangent(t *testing.T) {
 	r := NewRay(Point(0, 1, -5), Vector(0, 0, 1))
 	s := NewSphere()
-	xs := s.localIntersect(r)
-	if len(xs) != 2 {
+	t1, t2, err := s.localIntersect(r)
+	if err != nil {
 		t.Fatal("intersect error")
 	}
-	if !AlmostEqual(xs[0], 5.0, Eps) {
+	if !AlmostEqual(t1, 5.0, Eps) {
 		t.Fatal("intersect error")
 	}
-	if !AlmostEqual(xs[1], 5.0, Eps) {
+	if !AlmostEqual(t2, 5.0, Eps) {
 		t.Fatal("intersect error")
 	}
 }
@@ -44,14 +44,14 @@ func TestRayMissesSphere(t *testing.T) {
 func TestRayOriginatesInsideTheSphere(t *testing.T) {
 	r := NewRay(Point(0, 0, 0), Vector(0, 0, 1))
 	s := NewSphere()
-	xs := s.localIntersect(r)
-	if len(xs) != 2 {
+	t1, t2, err := s.localIntersect(r)
+	if err != nil {
 		t.Fatal("intersect error")
 	}
-	if !AlmostEqual(xs[0], -1.0, Eps) {
+	if !AlmostEqual(t1, -1.0, Eps) {
 		t.Fatal("intersect error")
 	}
-	if !AlmostEqual(xs[1], 1.0, Eps) {
+	if !AlmostEqual(t2, 1.0, Eps) {
 		t.Fatal("intersect error")
 	}
 }

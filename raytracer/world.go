@@ -120,10 +120,9 @@ func PrepareComputations(i Intersection, ray *Ray, xs []Intersection) (comps Pre
 
 func (w *World) ShadeHit(comps PreComputations, remaining int) (color *Tuple) {
 
-	shadowed := w.IsShadowed(comps.OverPoint)
 	color = Color(0, 0, 0)
 	for _, light := range w.Lights {
-		surface := Lighting(comps.Object.GetMaterial(), comps.Object, light, comps.OverPoint, comps.EyeV, comps.NormalV, shadowed)
+		surface := Lighting(comps.Object.GetMaterial(), comps.Object, light, comps.OverPoint, comps.EyeV, comps.NormalV, w.IsShadowed(comps.OverPoint, light))
 		color = color.Add(surface)
 		reflected := w.ReflectedColor(comps, remaining)
 		refracted := w.RefractedColor(comps, remaining)
@@ -149,19 +148,17 @@ func (w *World) ColorAt(ray *Ray, remaining int) (color *Tuple) {
 	}
 	return
 }
-func (w *World) IsShadowed(point *Tuple) bool {
-	for _, light := range w.Lights {
-		v := light.Position.Subtract(point)
-		distance := v.Magnitude()
-		direction := v.Normalize()
+func (w *World) IsShadowed(point *Tuple, light *PointLight) bool {
+	v := light.Position.Subtract(point)
+	distance := v.Magnitude()
+	direction := v.Normalize()
 
-		r := NewRay(point, direction)
-		intersections := w.Intersect(r)
+	r := NewRay(point, direction)
+	intersections := w.Intersect(r)
 
-		h, err := Hit(intersections)
-		if err == nil && h.T < distance {
-			return true
-		}
+	h, err := Hit(intersections)
+	if err == nil && h.T < distance {
+		return true
 	}
 	return false
 }

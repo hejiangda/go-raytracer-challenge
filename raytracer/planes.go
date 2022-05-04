@@ -9,11 +9,9 @@ var PlaneId = 0
 
 // Plane x-z plane
 type Plane struct {
-	Id          int
-	Transform   *Matrix
-	Material    *Material
-	localRay    *Ray
-	localNormal *Tuple
+	Id        int
+	Transform *Matrix
+	Material  *Material
 }
 
 func NewPlane() *Plane {
@@ -40,41 +38,42 @@ func (p *Plane) SetMaterial(m *Material) {
 }
 
 func (p *Plane) Intersect(r *Ray) (ret []Intersection) {
-	arr := p.localIntersect(r)
-	for _, t := range arr {
-		ret = append(ret, Intersection{t, p})
-	}
-	return
-}
-func (p *Plane) localIntersect(r *Ray) (ret []float64) {
 	inv, err := Inverse(p.Transform)
 	if err != nil {
-		log.Fatal(err)
+		panic(err)
 	}
+	// 世界坐标转换到物体坐标
 	localRay := r.Transform(inv)
+	t := p.localIntersect(localRay)
+	ret = append(ret, Intersection{t, p})
+	return
+}
+func (p *Plane) localIntersect(localRay *Ray) (t float64) {
 	if math.Abs(localRay.Direction.Y) < Eps {
 		return
 	}
-	t := -localRay.Origin.Y / localRay.Direction.Y
-	ret = append(ret, t)
+	t = -localRay.Origin.Y / localRay.Direction.Y
 	return
 }
 
-func (p *Plane) NormalAt(pos *Tuple) *Tuple {
-	return p.localNormalAt(pos)
-}
-func (p *Plane) localNormalAt(pos *Tuple) *Tuple {
+func (p *Plane) NormalAt(worldPoint *Tuple) *Tuple {
 	inv, err := Inverse(p.Transform)
 	if err != nil {
 		log.Fatal(err)
 	}
 	// 世界坐标转换到物体坐标
-	// 计算物体坐标系法向
-	localNormal := Vector(0, 1, 0)
+	objectPoint := MultiplyTuple(inv, worldPoint)
 
-	tinv := Transpose(inv)
+	// 获取物体坐标系下的法向
+	localNormal := p.localNormalAt(objectPoint)
+
 	// 物体坐标系法向转换到世界坐标系下的法向
-	worldNormal := MultiplyTuple(tinv, localNormal)
+	worldNormal := MultiplyTuple(Transpose(inv), localNormal)
 	worldNormal.W = 0
 	return Normalize(worldNormal)
+}
+func (p *Plane) localNormalAt(pos *Tuple) *Tuple {
+	// 计算物体坐标系法向
+	localNormal := Vector(0, 1, 0)
+	return localNormal
 }

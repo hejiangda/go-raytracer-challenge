@@ -160,3 +160,15 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 #### 对应的代码文件夹
 - chapter11
+
+## 12. Cubes
+
+实现正方体形状
+
+![cube](chapter12/chapter12.png)
+
+#### 对应的代码文件
+- cubes.go
+
+#### 对应的代码文件夹
+- chapter12
