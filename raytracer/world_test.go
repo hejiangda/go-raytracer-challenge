@@ -148,21 +148,21 @@ func TestWorld_ColorAt3(t *testing.T) {
 func TestWorld_IsShadowed1(t *testing.T) {
 	w := DefaultWorld()
 	p := Point(0, 10, 0)
-	if w.IsShadowed(p) {
+	if w.IsShadowed(p, w.Lights[0]) {
 		t.Fatal("failed")
 	}
 }
 func TestWorld_IsShadowed2(t *testing.T) {
 	w := DefaultWorld()
 	p := Point(10, -10, 10)
-	if !w.IsShadowed(p) {
+	if !w.IsShadowed(p, w.Lights[0]) {
 		t.Fatal("failed")
 	}
 }
 func TestWorld_IsShadowed3(t *testing.T) {
 	w := DefaultWorld()
 	p := Point(-20, 20, -20)
-	if w.IsShadowed(p) {
+	if w.IsShadowed(p, w.Lights[0]) {
 		t.Fatal("failed")
 	}
 }
@@ -170,7 +170,7 @@ func TestWorld_IsShadowed3(t *testing.T) {
 func TestWorld_IsShadowed4(t *testing.T) {
 	w := DefaultWorld()
 	p := Point(-2, 2, -2)
-	if w.IsShadowed(p) {
+	if w.IsShadowed(p, w.Lights[0]) {
 		t.Fatal("failed")
 	}
 }
