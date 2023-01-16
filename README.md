@@ -193,3 +193,10 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 ![group](chapter14/chapter14.png)
 ![group1](chapter14/chapter14-1.png)
 
+实现了最简单的AABB包围盒做碰撞检测
+
+使用AABB包围盒时渲染第二幅图要2分钟左右
+![img.png](chapter14/img.png)
+
+不使用AABB包围盒时渲染第二幅图要4分钟左右
+![img_1.png](chapter14/img_1.png)

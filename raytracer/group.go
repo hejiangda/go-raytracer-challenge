@@ -64,6 +64,10 @@ func (g *Group) SetMaterial(material *Material) {
 }
 
 func (g *Group) Intersect(r *Ray) (ret []Intersection) {
+	b := NewBoundsGroup(g)
+	if !b.Intersect(r) {
+		return ret
+	}
 	inv, _ := Inverse(g.GetTransform())
 	for _, child := range g.Children {
 		child.SetTransform(g.GetTransform().Multiply(child.GetTransform()))
