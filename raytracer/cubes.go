@@ -14,6 +14,16 @@ type Cube struct {
 	// 仅用于测试
 	//localRay    *Ray
 	//localNormal *Tuple
+
+	Parent Shape
+}
+
+func (c *Cube) GetParent() Shape {
+	return c.Parent
+}
+
+func (c *Cube) SetParent(s Shape) {
+	c.Parent = s
 }
 
 func NewCube() *Cube {
@@ -109,4 +119,28 @@ func (c *Cube) localNormalAt(point *Tuple) *Tuple {
 		return Vector(0, 0, point.Z)
 	}
 	return Vector(0, 0, 0)
+}
+func (c *Cube) World2Object(p *Tuple) *Tuple {
+	if c.Parent != nil {
+		p = c.Parent.World2Object(p)
+	}
+	inv, err := Inverse(c.Transform)
+	if err != nil {
+		panic(err)
+	}
+	localPoint := MultiplyTuple(inv, p)
+	return localPoint
+}
+func (c *Cube) Normal2World(t *Tuple) *Tuple {
+	inv, err := Inverse(c.Transform)
+	if err != nil {
+		panic(err)
+	}
+	normal := MultiplyTuple(Transpose(inv), t)
+	normal.W = 0
+	normal = normal.Normalize()
+	if c.Parent != nil {
+		normal = c.Parent.Normal2World(normal)
+	}
+	return normal
 }

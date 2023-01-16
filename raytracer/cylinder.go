@@ -1,7 +1,6 @@
 package raytracer
 
 import (
-	"log"
 	"math"
 )
 
@@ -18,6 +17,16 @@ type Cylinder struct {
 	Minimum float64
 	Maximum float64
 	Closed  bool
+
+	Parent Shape
+}
+
+func (c *Cylinder) GetParent() Shape {
+	return c.Parent
+}
+
+func (c *Cylinder) SetParent(s Shape) {
+	c.Parent = s
 }
 
 func NewCylinder() *Cylinder {
@@ -58,18 +67,15 @@ func (c *Cylinder) Intersect(r *Ray) (ret []Intersection) {
 }
 
 func (c *Cylinder) NormalAt(worldPoint *Tuple) *Tuple {
-	inv, err := Inverse(c.Transform)
-	if err != nil {
-		log.Fatal(err)
-	}
-	// 世界坐标转换到物体坐标
-	objectPoint := MultiplyTuple(inv, worldPoint)
+	//// 世界坐标转换到物体坐标
+	//objectPoint := MultiplyTuple(inv, worldPoint)
+	objectPoint := c.World2Object(worldPoint)
 
 	// 获取物体坐标系下的法向
 	localNormal := c.localNormalAt(objectPoint)
 
 	// 物体坐标系法向转换到世界坐标系下的法向
-	worldNormal := MultiplyTuple(Transpose(inv), localNormal)
+	worldNormal := c.Normal2World(localNormal)
 	worldNormal.W = 0
 	return Normalize(worldNormal)
 }
@@ -131,4 +137,28 @@ func (c *Cylinder) intersectCaps(ray *Ray, xs []Intersection) []Intersection {
 		xs = append(xs, Intersection{t, c})
 	}
 	return xs
+}
+func (c *Cylinder) World2Object(p *Tuple) *Tuple {
+	if c.Parent != nil {
+		p = c.Parent.World2Object(p)
+	}
+	inv, err := Inverse(c.Transform)
+	if err != nil {
+		panic(err)
+	}
+	localPoint := MultiplyTuple(inv, p)
+	return localPoint
+}
+func (c *Cylinder) Normal2World(t *Tuple) *Tuple {
+	inv, err := Inverse(c.Transform)
+	if err != nil {
+		panic(err)
+	}
+	normal := MultiplyTuple(Transpose(inv), t)
+	normal.W = 0
+	normal = normal.Normalize()
+	if c.Parent != nil {
+		normal = c.Parent.Normal2World(normal)
+	}
+	return normal
 }

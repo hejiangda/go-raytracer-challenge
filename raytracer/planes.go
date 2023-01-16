@@ -12,6 +12,15 @@ type Plane struct {
 	Id        int
 	Transform *Matrix
 	Material  *Material
+	Parent    Shape
+}
+
+func (p *Plane) GetParent() Shape {
+	return p.Parent
+}
+
+func (p *Plane) SetParent(s Shape) {
+	p.Parent = s
 }
 
 func NewPlane() *Plane {
@@ -72,8 +81,34 @@ func (p *Plane) NormalAt(worldPoint *Tuple) *Tuple {
 	worldNormal.W = 0
 	return Normalize(worldNormal)
 }
+
 func (p *Plane) localNormalAt(pos *Tuple) *Tuple {
 	// 计算物体坐标系法向
 	localNormal := Vector(0, 1, 0)
 	return localNormal
+}
+
+func (p *Plane) World2Object(t *Tuple) *Tuple {
+	if p.Parent != nil {
+		t = p.Parent.World2Object(t)
+	}
+	inv, err := Inverse(p.Transform)
+	if err != nil {
+		panic(err)
+	}
+	localPoint := MultiplyTuple(inv, t)
+	return localPoint
+}
+func (p *Plane) Normal2World(t *Tuple) *Tuple {
+	inv, err := Inverse(p.Transform)
+	if err != nil {
+		panic(err)
+	}
+	normal := MultiplyTuple(Transpose(inv), t)
+	normal.W = 0
+	normal = normal.Normalize()
+	if p.Parent != nil {
+		normal = p.Parent.Normal2World(normal)
+	}
+	return normal
 }

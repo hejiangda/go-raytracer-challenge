@@ -2,7 +2,6 @@ package raytracer
 
 import (
 	"errors"
-	"log"
 	"math"
 )
 
@@ -14,6 +13,15 @@ type Sphere struct {
 	Material  *Material
 	// 仅用于测试
 	localRay *Ray
+	Parent   Shape
+}
+
+func (s *Sphere) GetParent() Shape {
+	return s.Parent
+}
+
+func (s *Sphere) SetParent(shape Shape) {
+	s.Parent = shape
 }
 
 func NewSphere() *Sphere {
@@ -65,18 +73,16 @@ func (s *Sphere) SetTransform(t *Matrix) {
 }
 
 func (s *Sphere) NormalAt(worldPoint *Tuple) *Tuple {
-	inv, err := Inverse(s.Transform)
-	if err != nil {
-		log.Fatal(err)
-	}
+
 	// 世界坐标转换到物体坐标
-	objectPoint := MultiplyTuple(inv, worldPoint)
+	objectPoint := s.World2Object(worldPoint)
 
 	// 获取物体坐标系下的法向
 	localNormal := s.localNormalAt(objectPoint)
 
 	// 物体坐标系法向转换到世界坐标系下的法向
-	worldNormal := MultiplyTuple(Transpose(inv), localNormal)
+
+	worldNormal := s.Normal2World(localNormal)
 	worldNormal.W = 0
 	return Normalize(worldNormal)
 }
@@ -92,10 +98,33 @@ func (s *Sphere) localNormalAt(objectPoint *Tuple) *Tuple {
 	localNormal := Subtract(objectPoint, Point(0, 0, 0))
 	return localNormal
 }
-
+func (s *Sphere) World2Object(p *Tuple) *Tuple {
+	if s.Parent != nil {
+		p = s.Parent.World2Object(p)
+	}
+	inv, err := Inverse(s.Transform)
+	if err != nil {
+		panic(err)
+	}
+	localPoint := MultiplyTuple(inv, p)
+	return localPoint
+}
 func GlassSphere() (s *Sphere) {
 	s = NewSphere()
 	s.Material.Transparency = 1.0
 	s.Material.RefractiveIndex = 1.5
 	return s
+}
+func (s *Sphere) Normal2World(t *Tuple) *Tuple {
+	inv, err := Inverse(s.Transform)
+	if err != nil {
+		panic(err)
+	}
+	normal := MultiplyTuple(Transpose(inv), t)
+	normal.W = 0
+	normal = normal.Normalize()
+	if s.Parent != nil {
+		normal = s.Parent.Normal2World(normal)
+	}
+	return normal
 }

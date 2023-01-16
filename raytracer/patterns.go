@@ -31,8 +31,7 @@ func (p *StripePattern) At(point *Tuple) (color *Tuple) {
 }
 
 func (p *StripePattern) AtShape(obj Shape, point *Tuple) (color *Tuple) {
-	objTransInv, _ := Inverse(obj.GetTransform())
-	objPoint := MultiplyTuple(objTransInv, point)
+	objPoint := obj.World2Object(point)
 	patTransInv, _ := Inverse(p.transform)
 	patPoint := MultiplyTuple(patTransInv, objPoint)
 	return p.At(patPoint)
@@ -53,10 +52,11 @@ func NewGradientPattern(a, b *Tuple) *GradientPattern {
 }
 
 func (p *GradientPattern) AtShape(obj Shape, point *Tuple) (color *Tuple) {
-	objTransInv, _ := Inverse(obj.GetTransform())
-	objPoint := MultiplyTuple(objTransInv, point)
+	objPoint := obj.World2Object(point)
+
 	patTransInv, _ := Inverse(p.transform)
 	patPoint := MultiplyTuple(patTransInv, objPoint)
+
 	return p.At(patPoint)
 }
 func (p *GradientPattern) At(point *Tuple) (color *Tuple) {
@@ -85,8 +85,7 @@ func (p *RingPattern) At(point *Tuple) (color *Tuple) {
 	}
 }
 func (p *RingPattern) AtShape(obj Shape, point *Tuple) (color *Tuple) {
-	objTransInv, _ := Inverse(obj.GetTransform())
-	objPoint := MultiplyTuple(objTransInv, point)
+	objPoint := obj.World2Object(point)
 	patTransInv, _ := Inverse(p.transform)
 	patPoint := MultiplyTuple(patTransInv, objPoint)
 	return p.At(patPoint)
@@ -113,8 +112,7 @@ func (p *CheckersPattern) At(point *Tuple) (color *Tuple) {
 	}
 }
 func (p *CheckersPattern) AtShape(obj Shape, point *Tuple) (color *Tuple) {
-	objTransInv, _ := Inverse(obj.GetTransform())
-	objPoint := MultiplyTuple(objTransInv, point)
+	objPoint := obj.World2Object(point)
 	patTransInv, _ := Inverse(p.transform)
 	patPoint := MultiplyTuple(patTransInv, objPoint)
 	return p.At(patPoint)

@@ -82,3 +82,58 @@ func TestComputingTheNormalOnATransformedShape(t *testing.T) {
 		t.Fatal("failed n:", n)
 	}
 }
+
+func TestShapeHasParent(t *testing.T) {
+	s := NewShape("sphere")
+	if s.GetParent() != nil {
+		t.Fatal("default shape should have no parent!")
+	}
+}
+
+func TestConvertingAPointFromWorldToObjectSpace(t *testing.T) {
+	g1 := NewGroup()
+	g1.SetTransform(RotationY(math.Pi / 2))
+	g2 := NewGroup()
+	g2.SetTransform(Scaling(2, 2, 2))
+	g1.AddChild(g2)
+	s := NewSphere()
+	s.SetTransform(Translation(5, 0, 0))
+	g2.AddChild(s)
+
+	p := s.World2Object(Point(-2, 0, -10))
+	if Point(0, 0, -1).Equal(p) == false {
+		t.Fatal("failed")
+	}
+}
+
+func TestConvertingANormalFromObjectToWorldSpace(t *testing.T) {
+	g1 := NewGroup()
+	g1.SetTransform(RotationY(math.Pi / 2))
+	g2 := NewGroup()
+	g2.SetTransform(Scaling(1, 2, 3))
+	g1.AddChild(g2)
+	s := NewSphere()
+	s.SetTransform(Translation(5, 0, 0))
+	g2.AddChild(s)
+	n := s.Normal2World(Vector(math.Sqrt(3)/3, math.Sqrt(3)/3, math.Sqrt(3)/3))
+	//fmt.Println(n)
+	if !n.Equal(Vector(0.28571, 0.42857, -0.85714)) {
+		t.Fatal("failed")
+	}
+}
+
+func TestFindingTheNormalOnAChildObject(t *testing.T) {
+	g1 := NewGroup()
+	g1.SetTransform(RotationY(math.Pi / 2))
+	g2 := NewGroup()
+	g2.SetTransform(Scaling(1, 2, 3))
+	g1.AddChild(g2)
+	s := NewSphere()
+	s.SetTransform(Translation(5, 0, 0))
+	g2.AddChild(s)
+	n := s.NormalAt(Point(1.7321, 1.1547, -5.5774))
+	//fmt.Println(n)
+	if !n.Equal(Vector(0.2857, 0.42854, -0.85716)) {
+		t.Fatal("failed")
+	}
+}

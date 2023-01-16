@@ -9,6 +9,11 @@ type Shape interface {
 
 	Intersect(r *Ray) (ret []Intersection)
 	NormalAt(p *Tuple) *Tuple
+
+	GetParent() Shape
+	SetParent(s Shape)
+	World2Object(p *Tuple) *Tuple
+	Normal2World(p *Tuple) *Tuple
 }
 
 func NewShape(shapeType string) Shape {
