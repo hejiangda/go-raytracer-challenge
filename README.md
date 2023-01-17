@@ -195,8 +195,28 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 实现了最简单的AABB包围盒做碰撞检测
 
-使用AABB包围盒时渲染第二幅图要2分钟左右
+使用AABB包围盒时渲染第二幅图要2分钟左右    
+
 ![img.png](chapter14/img.png)
 
-不使用AABB包围盒时渲染第二幅图要4分钟左右
+不使用AABB包围盒时渲染第二幅图要4分钟左右  
+
 ![img_1.png](chapter14/img_1.png)
+
+#### 对应的代码文件
+- groups.go
+
+#### 对应的代码文件夹
+- chapter14
+
+## 15. Triangles
+
+实现了三角形的渲染
+
+![triangle](chapter15/chapter15.png)
+
+#### 对应的代码文件
+- triangles.go
+
+#### 对应的代码文件夹
+- chapter15
