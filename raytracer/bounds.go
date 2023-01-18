@@ -32,6 +32,16 @@ func NewBoundsShape(shape Shape) *Bounds {
 		return &Bounds{Point(-1, t.Minimum, -1), Point(1, t.Maximum, 1)}
 	case *Plane:
 		return &Bounds{Point(math.Inf(-1), 0, math.Inf(-1)), Point(math.Inf(1), 0, math.Inf(1))}
+		//case *Triangle:
+		//	minx := math.Min(math.Min(t.P1.X, t.P2.X), t.P3.X)
+		//	miny := math.Min(math.Min(t.P1.Y, t.P2.Y), t.P3.Y)
+		//	minz := math.Min(math.Min(t.P1.Z, t.P2.Z), t.P3.Z)
+		//
+		//	maxx := math.Max(math.Max(t.P1.X, t.P2.X), t.P3.X)
+		//	maxy := math.Max(math.Max(t.P1.Y, t.P2.Y), t.P3.Y)
+		//	maxz := math.Max(math.Max(t.P1.Z, t.P2.Z), t.P3.Z)
+		//
+		//	return &Bounds{Point(minx, miny, minz), Point(maxx, maxy, maxz)}
 	}
 	return nil
 }
@@ -47,15 +57,19 @@ func NewBoundsGroup(group *Group) *Bounds {
 
 		default:
 			objBounds = NewBoundsShape(t)
-			objBounds.Trans(child.GetTransform())
+			if objBounds != nil {
+				objBounds.Trans(child.GetTransform())
+			}
 		}
 		if i == 0 {
 			groupBounds = objBounds
-		} else {
+		} else if groupBounds != nil {
 			groupBounds.Update(objBounds)
 		}
 	}
-	groupBounds.Trans(group.GetTransform())
+	if groupBounds != nil {
+		groupBounds.Trans(group.GetTransform())
+	}
 	return groupBounds
 }
 func (b *Bounds) checkAxis(axis int, origin, direction float64) (tmin, tmax float64) {

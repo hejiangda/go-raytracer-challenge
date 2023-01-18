@@ -7,7 +7,7 @@ import (
 
 var WorldId = 0
 
-const DefaultReflectRemaining = 5
+const DefaultReflectRemaining = 5 //5
 const DefaultRefractRemaining = 5
 
 type World struct {

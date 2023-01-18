@@ -211,12 +211,19 @@ https://pragprog.com/book/jbtracer/the-ray-tracer-challenge
 
 ## 15. Triangles
 
-实现了三角形的渲染
+- 实现了三角形的渲染
+- 支持简单的obj格式模型
 
 ![triangle](chapter15/chapter15.png)
 
+本来想渲染一下茶壶或者兔子的，无奈速度太慢了，就连三角形不多的椭球都只能在小分辨时才能渲染出来。。。
+
+![obj](chapter15/chapter15-1.png)
+
 #### 对应的代码文件
 - triangles.go
+- objFile.go
 
 #### 对应的代码文件夹
 - chapter15
+

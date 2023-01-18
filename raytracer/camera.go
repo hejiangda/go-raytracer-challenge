@@ -1,6 +1,8 @@
 package raytracer
 
-import "math"
+import (
+	"math"
+)
 
 type Camera struct {
 	HSize       int
@@ -48,13 +50,29 @@ func (camera *Camera) RayForPixel(px, py int) (ray *Ray) {
 
 func (camera *Camera) Render(world *World) (image *Canvas) {
 	image = NewCanvas(camera.HSize, camera.VSize)
+	//wg := sync.WaitGroup{}
+	//numCPUs := runtime.NumCPU()
+	//pool := tunny.NewFunc(numCPUs, func(idx interface{}) interface{} {
+	//	defer wg.Done()
+	//	x := idx.([]int)[0]
+	//	y := idx.([]int)[1]
+	//	ray := camera.RayForPixel(x, y)
+	//	color := world.ColorAt(ray, DefaultReflectRemaining)
+	//	image.WritePixel(x, y, color)
+	//	return nil
+	//})
+	//defer pool.Close()
 
-	for y := 0; y < camera.VSize-1; y++ {
-		for x := 0; x < camera.HSize-1; x++ {
+	//wg.Add(camera.VSize * camera.HSize)
+
+	for y := 0; y < camera.VSize; y++ {
+		for x := 0; x < camera.HSize; x++ {
+			//go pool.Process([]int{x, y})
 			ray := camera.RayForPixel(x, y)
 			color := world.ColorAt(ray, DefaultReflectRemaining)
 			image.WritePixel(x, y, color)
 		}
 	}
+	//wg.Wait()
 	return
 }
